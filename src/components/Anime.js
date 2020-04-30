@@ -1,5 +1,6 @@
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
+import Pagination from "@material-ui/lab/Pagination";
 import React, { Component, Fragment } from "react";
 
 import Card from "./Card";
@@ -13,6 +14,7 @@ class Anime extends Component {
     this.searchInput = React.createRef();
     this.state = {
       topAnime: [],
+      currentPage: 1,
     };
   }
 
@@ -46,6 +48,15 @@ class Anime extends Component {
             ></Card>
           ))}
         </Grid>
+        <Pagination
+          count={10}
+          page={this.state.currentPage}
+          onChange={(e, page) =>
+            this.setState({
+              currentPage: page,
+            })
+          }
+        ></Pagination>
       </Fragment>
     );
   }
