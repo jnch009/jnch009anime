@@ -1,13 +1,13 @@
 import AppBar from "@material-ui/core/AppBar";
-import Hidden from "@material-ui/core/Hidden";
 import IconButton from "@material-ui/core/IconButton";
 import InputBase from "@material-ui/core/InputBase";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,6 +66,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchBar(props) {
   const classes = useStyles();
+  const [search, setSearch] = useState(false);
+  const matches = useMediaQuery("(max-width:600px)");
+
+  useEffect(() => {
+    if (matches === false) {
+      setSearch(false);
+    } else if (search) {
+      props.searchRef.current.children[0].focus();
+    }
+  }, [search, props.searchRef, matches]);
 
   return (
     <div className={classes.root}>
@@ -82,7 +92,27 @@ export default function SearchBar(props) {
           <Typography className={classes.title} variant="h6" noWrap>
             {props.title}
           </Typography>
-          <Hidden>
+          {matches ? (
+            <IconButton color="inherit" onClick={() => setSearch(!search)}>
+              {search ? (
+                <div className={classes.search}>
+                  <InputBase
+                    placeholder="Search…"
+                    classes={{
+                      root: classes.inputRoot,
+                      input: classes.inputInput,
+                    }}
+                    inputProps={{ "aria-label": "search" }}
+                    ref={props.searchRef}
+                    onInput={(e) => console.log(e.target.value)}
+                    onBlur={() => setSearch(!search)}
+                  />
+                </div>
+              ) : (
+                <SearchIcon />
+              )}
+            </IconButton>
+          ) : (
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
@@ -97,7 +127,7 @@ export default function SearchBar(props) {
                 onInput={(e) => console.log(e.target.value)}
               />
             </div>
-          </Hidden>
+          )}
         </Toolbar>
       </AppBar>
     </div>

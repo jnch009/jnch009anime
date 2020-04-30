@@ -6,10 +6,15 @@ import SearchBar from "./SearchBar";
 const title = `Anime for all your needs!`;
 
 class Anime extends Component {
+  constructor() {
+    super();
+    this.searchInput = React.createRef();
+  }
+
   render() {
     return (
       <Fragment>
-        <SearchBar title={title} />
+        <SearchBar title={title} searchRef={this.searchInput} />
         <Box display="flex" flexDirection="column" alignItems="center">
           <p>this is a test paragraph</p>
         </Box>
