@@ -1,0 +1,19 @@
+.image {
+  position: relative;
+  width: 100%;
+}
+
+.image > img {
+  opacity: 0.1;
+}
+
+.image > p {
+  position: absolute;
+  top: 200px;
+  left: 0;
+  width: 90%;
+  text-align: center;
+  border: 1px solid;
+  margin: 9px;
+  background-color: white;
+}
