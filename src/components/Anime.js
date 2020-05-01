@@ -125,7 +125,7 @@ class Anime extends Component {
           handleSearchClick={this.handleSearch}
           handleSearchQuery={this.handleSearchQuery}
         />
-        {search || queryResults.length != 0 ? (
+        {search || queryResults.length !== 0 ? (
           <>
             <Section
               sectionTitle='Search Results'
