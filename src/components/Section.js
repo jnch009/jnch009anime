@@ -12,6 +12,8 @@ const Section = ({
   currentPage,
   subType,
   newPage,
+  offset,
+  topItemsToReturn,
 }) => {
   return (
     <Box mt={10}>
@@ -22,14 +24,16 @@ const Section = ({
         {topSubtype.length === 0 ? (
           <h1>Loading</h1>
         ) : (
-          topSubtype.map((subtype) => (
-            <Card
-              key={subtype.mal_id}
-              image={subtype.image_url}
-              title={subtype.title}
-              startDate={subtype.start_date}
-            />
-          ))
+          topSubtype
+            .slice(offset, offset + topItemsToReturn)
+            .map((subtype) => (
+              <Card
+                key={subtype.mal_id}
+                image={subtype.image_url}
+                title={subtype.title}
+                startDate={subtype.start_date}
+              />
+            ))
         )}
       </Grid>
       <Box display='flex' justifyContent='center'>
@@ -51,6 +55,8 @@ Section.propTypes = {
   currentPage: PropTypes.number.isRequired,
   subType: PropTypes.string.isRequired,
   newPage: PropTypes.func.isRequired,
+  offset: PropTypes.number.isRequired,
+  topItemsToReturn: PropTypes.number.isRequired,
 };
 
 export default Section;
