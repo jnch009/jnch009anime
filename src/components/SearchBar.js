@@ -8,6 +8,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,16 +65,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const handleSearchQuery = async (e) => {
-  // using the search endpoint
-  const responseAnime = await fetch(
-    `https://api.jikan.moe/v3/search/anime?q=${e.target.value}`,
-  );
-
-  const animeJSON = await responseAnime.json();
-  console.log(animeJSON);
-};
-
 export default function SearchBar(props) {
   const classes = useStyles();
   const [search, setSearch] = useState(false);
@@ -87,7 +78,13 @@ export default function SearchBar(props) {
     }
   }, [search, props.searchRef, matches]);
 
-  const { handleSearchClick } = props;
+  const { title, handleSearchClick, handleSearchQuery } = props;
+
+  SearchBar.propTypes = {
+    title: PropTypes.string,
+    handleSearchClick: PropTypes.func.isRequired,
+    handleSearchQuery: PropTypes.func.isRequired,
+  };
 
   return (
     <div
@@ -106,7 +103,7 @@ export default function SearchBar(props) {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant='h6' noWrap>
-            {props.title}
+            {title}
           </Typography>
           {matches ? (
             <IconButton color='inherit' onClick={() => setSearch(!search)}>

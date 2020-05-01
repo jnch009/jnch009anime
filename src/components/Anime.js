@@ -10,6 +10,7 @@ const fetchAnime = `https://api.jikan.moe/v3/top/anime`;
 const fetchManga = `https://api.jikan.moe/v3/top/manga`;
 const subTypeAnime = 'anime';
 const subTypeManga = 'manga';
+const subTypeSearch = 'search';
 const topItemsToReturn = 5;
 
 class Anime extends Component {
@@ -21,11 +22,12 @@ class Anime extends Component {
       topManga: [],
       currentPageAnime: 1,
       currentPageManga: 1,
+      currentPageSearch: 1,
       totalPagesAnime: 0,
       totalPagesManga: 0,
       offset: 0,
       search: false,
-      query: '',
+      queryResults: [],
     };
   }
 
@@ -71,6 +73,10 @@ class Anime extends Component {
       this.setState({
         currentPageManga: page,
       });
+    } else if (subtype === subTypeSearch) {
+      this.setState({
+        currentPageSearch: page,
+      });
     }
   };
 
@@ -86,6 +92,19 @@ class Anime extends Component {
     }
   };
 
+  handleSearchQuery = async (e) => {
+    // using the search endpoint
+    const responseAnime = await fetch(
+      `https://api.jikan.moe/v3/search/anime?q=${e.target.value}`,
+    );
+
+    const animeJSON = await responseAnime.json();
+    console.log(animeJSON.results);
+    this.setState({
+      queryResults: [...animeJSON.results],
+    });
+  };
+
   render() {
     const {
       topAnime,
@@ -94,7 +113,9 @@ class Anime extends Component {
       totalPagesManga,
       currentPageAnime,
       currentPageManga,
+      currentPageSearch,
       search,
+      queryResults,
     } = this.state;
     return (
       <>
@@ -102,6 +123,7 @@ class Anime extends Component {
           title={title}
           searchRef={this.searchInput}
           handleSearchClick={this.handleSearch}
+          handleSearchQuery={this.handleSearchQuery}
         />
         <Section
           sectionTitle='Top Anime!'
@@ -126,7 +148,16 @@ class Anime extends Component {
         />
         <hr />
         {search ? (
-          <h1>Search</h1>
+          <Section
+            sectionTitle='Search Results'
+            topSubtype={queryResults}
+            totalPages={queryResults.length / 5}
+            currentPage={currentPageSearch}
+            subType={subTypeSearch}
+            newPage={this.fetchNewPage}
+            offset={currentPageSearch * topItemsToReturn - 5}
+            topItemsToReturn={topItemsToReturn}
+          />
         ) : (
           <Box display='flex' flexDirection='column' alignItems='center'>
             <h2>What's the difference between Manga and Anime?</h2>
