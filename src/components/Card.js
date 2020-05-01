@@ -1,34 +1,33 @@
-import Box from "@material-ui/core/Box";
-import teal from "@material-ui/core/colors/teal";
-import Typography from "@material-ui/core/Typography";
-import React, { useState } from "react";
+import Box from '@material-ui/core/Box';
+import teal from '@material-ui/core/colors/teal';
+import Typography from '@material-ui/core/Typography';
+import React, { useState } from 'react';
 
-import "./Card.css";
+import './Card.css';
 
 const color = teal[500];
 
 const Card = ({ image, title, startDate }) => {
-  //console.log(image);
   const [hoverDetails, setHoverDetails] = useState(false);
 
   return (
     <Box bgcolor={color} m={3} p={7}>
       <Box
-        className={hoverDetails ? "image hvr-fade" : null}
+        className={hoverDetails ? 'image hvr-fade' : null}
         onPointerEnter={() => setHoverDetails(true)}
         onPointerLeave={() => setHoverDetails(false)}
       >
         <img
-          className={hoverDetails ? "imgOpacity" : null}
+          className={hoverDetails ? 'imgOpacity' : null}
           width={250}
           height={400}
           src={image}
-          alt=""
+          alt=''
         />
-        <p className={hoverDetails ? null : "hidden"}>Click for more details</p>
+        <p className={hoverDetails ? null : 'hidden'}>Click for more details</p>
       </Box>
-      <Typography align="center" className="animeInfo">
-        <h4 className="hvr-fade">
+      <Typography component={'div'} align='center' className='animeInfo'>
+        <h4>
           <strong>{title}</strong>
         </h4>
         <h6>Debut: {startDate}</h6>
