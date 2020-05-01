@@ -63,29 +63,31 @@ class Anime extends Component {
     return (
       <>
         <SearchBar title={title} searchRef={this.searchInput} />
-        <Box display='flex' flexDirection='column' alignItems='center'>
-          <h1>Top Anime!</h1>
-        </Box>
-        <Grid container justify='space-evenly'>
-          {topAnime.length === 0 ? (
-            <h1>Loading</h1>
-          ) : (
-            topAnime.map((anime) => (
-              <Card
-                key={anime.mal_id}
-                image={anime.image_url}
-                title={anime.title}
-                startDate={anime.start_date}
-              />
-            ))
-          )}
-        </Grid>
-        <Box display='flex' justifyContent='center'>
-          <Pagination
-            count={totalPages}
-            page={currentPage}
-            onChange={(e, page) => this.fetchNewPage(page)}
-          />
+        <Box mt={10}>
+          <Box display='flex' flexDirection='column' alignItems='center'>
+            <h1>Top Anime!</h1>
+          </Box>
+          <Grid container justify='space-evenly'>
+            {topAnime.length === 0 ? (
+              <h1>Loading</h1>
+            ) : (
+              topAnime.map((anime) => (
+                <Card
+                  key={anime.mal_id}
+                  image={anime.image_url}
+                  title={anime.title}
+                  startDate={anime.start_date}
+                />
+              ))
+            )}
+          </Grid>
+          <Box display='flex' justifyContent='center'>
+            <Pagination
+              count={totalPages}
+              page={currentPage}
+              onChange={(e, page) => this.fetchNewPage(page)}
+            />
+          </Box>
         </Box>
       </>
     );
