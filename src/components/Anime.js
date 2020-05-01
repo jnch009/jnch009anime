@@ -125,53 +125,57 @@ class Anime extends Component {
           handleSearchClick={this.handleSearch}
           handleSearchQuery={this.handleSearchQuery}
         />
-        <Section
-          sectionTitle='Top Anime!'
-          topSubtype={topAnime}
-          totalPages={totalPagesAnime}
-          currentPage={currentPageAnime}
-          subType={subTypeAnime}
-          newPage={this.fetchNewPage}
-          offset={currentPageAnime * topItemsToReturn - 5}
-          topItemsToReturn={topItemsToReturn}
-        />
-        <hr />
-        <Section
-          sectionTitle='Top Manga!'
-          topSubtype={topManga}
-          totalPages={totalPagesManga}
-          currentPage={currentPageManga}
-          subType={subTypeManga}
-          newPage={this.fetchNewPage}
-          offset={currentPageManga * topItemsToReturn - 5}
-          topItemsToReturn={topItemsToReturn}
-        />
-        <hr />
-        {search ? (
-          <Section
-            sectionTitle='Search Results'
-            topSubtype={queryResults}
-            totalPages={queryResults.length / 5}
-            currentPage={currentPageSearch}
-            subType={subTypeSearch}
-            newPage={this.fetchNewPage}
-            offset={currentPageSearch * topItemsToReturn - 5}
-            topItemsToReturn={topItemsToReturn}
-          />
+        {search || queryResults.length != 0 ? (
+          <>
+            <Section
+              sectionTitle='Search Results'
+              topSubtype={queryResults}
+              totalPages={queryResults.length / 5}
+              currentPage={currentPageSearch}
+              subType={subTypeSearch}
+              newPage={this.fetchNewPage}
+              offset={currentPageSearch * topItemsToReturn - 5}
+              topItemsToReturn={topItemsToReturn}
+            />
+          </>
         ) : (
-          <Box display='flex' flexDirection='column' alignItems='center'>
-            <h2>What's the difference between Manga and Anime?</h2>
-            <p>
-              To oversimplify manga vs. anime, anime are TV shows or movies,
-              while manga are comic books or graphic novels.
-              <br />
-              <br />
-              For more information, here is the source:
-              <a href='https://writingexplained.org/anime-vs-manga-difference'>
-                https://writingexplained.org/anime-vs-manga-difference
-              </a>
-            </p>
-          </Box>
+          <>
+            <Section
+              sectionTitle='Top Anime!'
+              topSubtype={topAnime}
+              totalPages={totalPagesAnime}
+              currentPage={currentPageAnime}
+              subType={subTypeAnime}
+              newPage={this.fetchNewPage}
+              offset={currentPageAnime * topItemsToReturn - 5}
+              topItemsToReturn={topItemsToReturn}
+            />
+            <hr />
+            <Section
+              sectionTitle='Top Manga!'
+              topSubtype={topManga}
+              totalPages={totalPagesManga}
+              currentPage={currentPageManga}
+              subType={subTypeManga}
+              newPage={this.fetchNewPage}
+              offset={currentPageManga * topItemsToReturn - 5}
+              topItemsToReturn={topItemsToReturn}
+            />
+            <hr />
+            <Box display='flex' flexDirection='column' alignItems='center'>
+              <h2>What's the difference between Manga and Anime?</h2>
+              <p>
+                To oversimplify manga vs. anime, anime are TV shows or movies,
+                while manga are comic books or graphic novels.
+                <br />
+                <br />
+                For more information, here is the source:
+                <a href='https://writingexplained.org/anime-vs-manga-difference'>
+                  https://writingexplained.org/anime-vs-manga-difference
+                </a>
+              </p>
+            </Box>
+          </>
         )}
       </>
     );

@@ -21,7 +21,7 @@ const Section = ({
         <h1>{sectionTitle}</h1>
       </Box>
       <Grid container justify='space-evenly'>
-        {topSubtype.length === 0 ? (
+        {topSubtype.length === 0 && subType !== `search` ? (
           <h1>Loading</h1>
         ) : (
           topSubtype
