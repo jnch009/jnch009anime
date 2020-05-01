@@ -77,8 +77,10 @@ export default function SearchBar(props) {
     }
   }, [search, props.searchRef, matches]);
 
+  const { handleSearchClick } = props;
+
   return (
-    <div className={classes.root}>
+    <div className={classes.root} onClick={() => handleSearchClick(true)}>
       <AppBar position='fixed'>
         <Toolbar>
           <IconButton

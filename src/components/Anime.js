@@ -25,6 +25,7 @@ class Anime extends Component {
       totalPagesAnime: 0,
       totalPagesManga: 0,
       offset: 0,
+      search: false,
     };
   }
 
@@ -99,6 +100,14 @@ class Anime extends Component {
     }
   }
 
+  handleSearch = (clicked) => {
+    if (clicked) {
+      this.setState({
+        search: true,
+      });
+    }
+  };
+
   render() {
     const {
       topAnime,
@@ -106,10 +115,15 @@ class Anime extends Component {
       totalPagesAnime,
       totalPagesManga,
       currentPage,
+      search,
     } = this.state;
     return (
       <>
-        <SearchBar title={title} searchRef={this.searchInput} />
+        <SearchBar
+          title={title}
+          searchRef={this.searchInput}
+          handleSearchClick={this.handleSearch}
+        />
         <Box mt={10}>
           <Box display='flex' flexDirection='column' alignItems='center'>
             <h1>Top Anime!</h1>
@@ -164,19 +178,23 @@ class Anime extends Component {
           </Box>
         </Box>
         <hr />
-        <Box display='flex' flexDirection='column' alignItems='center'>
-          <h2>What's the difference between Manga and Anime?</h2>
-          <p>
-            To oversimplify manga vs. anime, anime are TV shows or movies, while
-            manga are comic books or graphic novels.
-            <br />
-            <br />
-            For more information, here is the source:
-            <a href='https://writingexplained.org/anime-vs-manga-difference'>
-              https://writingexplained.org/anime-vs-manga-difference
-            </a>
-          </p>
-        </Box>
+        {search ? (
+          <h1>Search</h1>
+        ) : (
+          <Box display='flex' flexDirection='column' alignItems='center'>
+            <h2>What's the difference between Manga and Anime?</h2>
+            <p>
+              To oversimplify manga vs. anime, anime are TV shows or movies,
+              while manga are comic books or graphic novels.
+              <br />
+              <br />
+              For more information, here is the source:
+              <a href='https://writingexplained.org/anime-vs-manga-difference'>
+                https://writingexplained.org/anime-vs-manga-difference
+              </a>
+            </p>
+          </Box>
+        )}
       </>
     );
   }
