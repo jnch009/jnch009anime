@@ -1,8 +1,9 @@
-import React from 'react';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Pagination from '@material-ui/lab/Pagination';
 import PropTypes from 'prop-types';
+import React from 'react';
+
 import Card from './Card';
 
 const Section = ({
@@ -29,6 +30,7 @@ const Section = ({
             .map((subtype) => (
               <Card
                 key={subtype.mal_id}
+                id={subtype.mal_id}
                 image={subtype.image_url}
                 title={subtype.title}
                 startDate={subtype.start_date}
