@@ -2,49 +2,8 @@ import React from 'react';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Pagination from '@material-ui/lab/Pagination';
+import PropTypes from 'prop-types';
 import Card from './Card';
-
-const subTypeAnime = 'anime';
-const subTypeManga = 'manga';
-const fetchAnime = `https://api.jikan.moe/v3/top/anime`;
-const fetchManga = `https://api.jikan.moe/v3/top/manga`;
-const topItemsToReturn = 5;
-
-const fetchNewPage = (page, subtype) => {
-  if (subtype === subTypeAnime) {
-    this.setState(
-      {
-        currentPageAnime: page,
-      },
-      async () => {
-        const { currentPageAnime } = this.state;
-        const offset = currentPageAnime * topItemsToReturn - 5;
-        const resp = await fetch(fetchAnime);
-        const data = await resp.json();
-        const top5 = data.top.slice(offset, offset + topItemsToReturn);
-        this.setState({
-          topAnime: [...top5],
-        });
-      },
-    );
-  } else if (subtype === subTypeManga) {
-    this.setState(
-      {
-        currentPageManga: page,
-      },
-      async () => {
-        const { currentPageManga } = this.state;
-        const offset = currentPageManga * topItemsToReturn - 5;
-        const resp = await fetch(fetchManga);
-        const data = await resp.json();
-        const top5 = data.top.slice(offset, offset + topItemsToReturn);
-        this.setState({
-          topManga: [...top5],
-        });
-      },
-    );
-  }
-};
 
 const Section = ({
   sectionTitle,
@@ -52,6 +11,7 @@ const Section = ({
   totalPages,
   currentPage,
   subType,
+  newPage,
 }) => {
   return (
     <Box mt={10}>
@@ -76,11 +36,21 @@ const Section = ({
         <Pagination
           count={totalPages}
           page={currentPage}
-          onChange={(e, page) => fetchNewPage(page, subType)}
+          onChange={(e, page) => newPage(page, subType)}
         />
       </Box>
     </Box>
   );
+};
+
+// for validating prop types
+Section.propTypes = {
+  sectionTitle: PropTypes.string.isRequired,
+  topSubtype: PropTypes.instanceOf(Array).isRequired,
+  totalPages: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  subType: PropTypes.string.isRequired,
+  newPage: PropTypes.func.isRequired,
 };
 
 export default Section;

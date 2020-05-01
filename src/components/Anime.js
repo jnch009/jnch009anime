@@ -63,41 +63,41 @@ class Anime extends Component {
     );
   }
 
-  // fetchNewPage(page, subtype) {
-  //   if (subtype === subTypeAnime) {
-  //     this.setState(
-  //       {
-  //         currentPageAnime: page,
-  //       },
-  //       async () => {
-  //         const { currentPageAnime } = this.state;
-  //         const offset = currentPageAnime * topItemsToReturn - 5;
-  //         const resp = await fetch(fetchAnime);
-  //         const data = await resp.json();
-  //         const top5 = data.top.slice(offset, offset + topItemsToReturn);
-  //         this.setState({
-  //           topAnime: [...top5],
-  //         });
-  //       },
-  //     );
-  //   } else if (subtype === subTypeManga) {
-  //     this.setState(
-  //       {
-  //         currentPageManga: page,
-  //       },
-  //       async () => {
-  //         const { currentPageManga } = this.state;
-  //         const offset = currentPageManga * topItemsToReturn - 5;
-  //         const resp = await fetch(fetchManga);
-  //         const data = await resp.json();
-  //         const top5 = data.top.slice(offset, offset + topItemsToReturn);
-  //         this.setState({
-  //           topManga: [...top5],
-  //         });
-  //       },
-  //     );
-  //   }
-  // }
+  fetchNewPage = (page, subtype) => {
+    if (subtype === subTypeAnime) {
+      this.setState(
+        {
+          currentPageAnime: page,
+        },
+        async () => {
+          const { currentPageAnime } = this.state;
+          const offset = currentPageAnime * topItemsToReturn - 5;
+          const resp = await fetch(fetchAnime);
+          const data = await resp.json();
+          const top5 = data.top.slice(offset, offset + topItemsToReturn);
+          this.setState({
+            topAnime: [...top5],
+          });
+        },
+      );
+    } else if (subtype === subTypeManga) {
+      this.setState(
+        {
+          currentPageManga: page,
+        },
+        async () => {
+          const { currentPageManga } = this.state;
+          const offset = currentPageManga * topItemsToReturn - 5;
+          const resp = await fetch(fetchManga);
+          const data = await resp.json();
+          const top5 = data.top.slice(offset, offset + topItemsToReturn);
+          this.setState({
+            topManga: [...top5],
+          });
+        },
+      );
+    }
+  };
 
   handleSearch = (clicked) => {
     if (clicked) {
@@ -134,6 +134,7 @@ class Anime extends Component {
           totalPages={totalPagesAnime}
           currentPage={currentPageAnime}
           subType={subTypeAnime}
+          newPage={this.fetchNewPage}
         />
         <hr />
         <Section
@@ -142,6 +143,7 @@ class Anime extends Component {
           totalPages={totalPagesManga}
           currentPage={currentPageManga}
           subType={subTypeManga}
+          newPage={this.fetchNewPage}
         />
         <hr />
         {search ? (
