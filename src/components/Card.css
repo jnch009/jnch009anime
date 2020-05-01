@@ -6,7 +6,7 @@ img {
   transition: opacity 0.5s;
 }
 
-img:hover {
+.imgHover:hover {
   opacity: 0.1;
 }
 
