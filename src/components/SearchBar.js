@@ -117,7 +117,6 @@ export default function SearchBar(props) {
                     }}
                     inputProps={{ 'aria-label': 'search' }}
                     ref={props.searchRef}
-                    onInput={(e) => console.log(e.target.value)}
                     onBlur={() => setSearch(!search)}
                   />
                 </div>

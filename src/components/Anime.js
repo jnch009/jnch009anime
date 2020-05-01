@@ -2,7 +2,6 @@ import Box from '@material-ui/core/Box';
 import React, { Component } from 'react';
 
 import SearchBar from './SearchBar';
-
 import Section from './Section';
 
 const title = `Anime for all your needs!`;
@@ -28,6 +27,7 @@ class Anime extends Component {
       offset: 0,
       search: false,
       queryResults: [],
+      queryError: '',
     };
   }
 
@@ -51,11 +51,11 @@ class Anime extends Component {
       return data.top.length / topItemsToReturn;
     };
 
-    getTop(fetchAnime, subTypeAnime).then((data) =>
+    getTop(fetchAnime, subTypeAnime).then((data) => {
       this.setState({
         totalPagesAnime: data,
-      }),
-    );
+      });
+    });
 
     getTop(fetchManga, subTypeManga).then((data) =>
       this.setState({
@@ -97,12 +97,20 @@ class Anime extends Component {
     const responseAnime = await fetch(
       `https://api.jikan.moe/v3/search/anime?q=${e.target.value}`,
     );
-
+    console.log(responseAnime);
     const animeJSON = await responseAnime.json();
-    console.log(animeJSON.results);
-    this.setState({
-      queryResults: [...animeJSON.results],
-    });
+    console.log(animeJSON);
+
+    if (animeJSON.status >= 400) {
+      this.setState({
+        queryError: animeJSON.message,
+      });
+    } else {
+      this.setState({
+        queryResults: [...animeJSON.results],
+        queryError: '',
+      });
+    }
   };
 
   render() {
@@ -116,6 +124,7 @@ class Anime extends Component {
       currentPageSearch,
       search,
       queryResults,
+      queryError,
     } = this.state;
     return (
       <>
@@ -127,16 +136,22 @@ class Anime extends Component {
         />
         {search || queryResults.length !== 0 ? (
           <>
-            <Section
-              sectionTitle='Search Results'
-              topSubtype={queryResults}
-              totalPages={queryResults.length / 5}
-              currentPage={currentPageSearch}
-              subType={subTypeSearch}
-              newPage={this.fetchNewPage}
-              offset={currentPageSearch * topItemsToReturn - 5}
-              topItemsToReturn={topItemsToReturn}
-            />
+            {queryError.length !== 0 ? (
+              <Box display='flex' justifyContent='center' m={15}>
+                <h1>{queryError}</h1>
+              </Box>
+            ) : (
+              <Section
+                sectionTitle='Search Results'
+                topSubtype={queryResults}
+                totalPages={queryResults.length / 5}
+                currentPage={currentPageSearch}
+                subType={subTypeSearch}
+                newPage={this.fetchNewPage}
+                offset={currentPageSearch * topItemsToReturn - 5}
+                topItemsToReturn={topItemsToReturn}
+              />
+            )}
           </>
         ) : (
           <>
