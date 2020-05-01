@@ -1,6 +1,5 @@
 .image {
   position: relative;
-  width: 100%;
 }
 
 img {
@@ -28,4 +27,8 @@ img:hover {
 
 .hidden {
   display: none;
+}
+
+.animeInfo {
+  width: 250px;
 }

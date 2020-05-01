@@ -7,7 +7,7 @@ import Card from "./Card";
 import SearchBar from "./SearchBar";
 
 const title = `Anime for all your needs!`;
-const topAnimeToReturn = 4;
+const topAnimeToReturn = 5;
 class Anime extends Component {
   constructor() {
     super();
@@ -15,17 +15,41 @@ class Anime extends Component {
     this.state = {
       topAnime: [],
       currentPage: 1,
+      totalPages: 0,
+      offset: 0,
     };
+  }
+
+  fetchNewPage(page) {
+    this.setState(
+      {
+        currentPage: page,
+      },
+      async () => {
+        const offset = this.state.currentPage * topAnimeToReturn - 5;
+        const resp = await fetch(`https://api.jikan.moe/v3/top/anime`);
+        const data = await resp.json();
+        const top5 = data.top.slice(offset, offset + topAnimeToReturn);
+        this.setState({
+          topAnime: [...top5],
+        });
+      }
+    );
   }
 
   componentDidMount() {
     const getTopAnime = async () => {
       const resp = await fetch(`https://api.jikan.moe/v3/top/anime`);
       const data = await resp.json();
-      const top4 = data.top.slice(0, topAnimeToReturn);
-      console.log(top4);
+      console.log(data.top.slice());
+      console.log(data.top.length / topAnimeToReturn);
+      const top5 = data.top.slice(
+        this.state.offset,
+        this.state.offset + topAnimeToReturn
+      );
       this.setState({
-        topAnime: [...this.state.topAnime, ...top4],
+        topAnime: [...top5],
+        totalPages: data.top.length / topAnimeToReturn,
       });
     };
     getTopAnime();
@@ -49,13 +73,9 @@ class Anime extends Component {
           ))}
         </Grid>
         <Pagination
-          count={10}
+          count={this.state.totalPages}
           page={this.state.currentPage}
-          onChange={(e, page) =>
-            this.setState({
-              currentPage: page,
-            })
-          }
+          onChange={(e, page) => this.fetchNewPage(page)}
         ></Pagination>
       </Fragment>
     );

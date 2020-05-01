@@ -27,7 +27,7 @@ const Card = ({ image, title, startDate }) => {
         />
         <p className={hoverDetails ? null : "hidden"}>Click for more details</p>
       </Box>
-      <Typography align="center">
+      <Typography align="center" className="animeInfo">
         <h4 className="hvr-fade">
           <strong>{title}</strong>
         </h4>
