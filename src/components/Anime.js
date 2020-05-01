@@ -97,9 +97,7 @@ class Anime extends Component {
     const responseAnime = await fetch(
       `https://api.jikan.moe/v3/search/anime?q=${e.target.value}`,
     );
-    console.log(responseAnime);
     const animeJSON = await responseAnime.json();
-    console.log(animeJSON);
 
     if (animeJSON.status >= 400) {
       this.setState({

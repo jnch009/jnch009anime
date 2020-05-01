@@ -5,10 +5,9 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -87,26 +86,20 @@ export default function SearchBar(props) {
   };
 
   return (
-    <div
-      className={classes.root}
-      onClick={() => handleSearchClick(true)}
-      onBlur={() => handleSearchClick(false)}
-    >
+    <div className={classes.root}>
       <AppBar position='fixed'>
         <Toolbar>
-          <IconButton
-            edge='start'
-            className={classes.menuButton}
-            color='inherit'
-            aria-label='open drawer'
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography className={classes.title} variant='h6' noWrap>
+          <Typography className={classes.title} variant='h4' noWrap>
             {title}
           </Typography>
           {matches ? (
-            <IconButton color='inherit' onClick={() => setSearch(!search)}>
+            <IconButton
+              color='inherit'
+              onClick={() => {
+                handleSearchClick(true);
+                setSearch(true);
+              }}
+            >
               {search ? (
                 <div className={classes.search}>
                   <InputBase
@@ -117,7 +110,11 @@ export default function SearchBar(props) {
                     }}
                     inputProps={{ 'aria-label': 'search' }}
                     ref={props.searchRef}
-                    onBlur={() => setSearch(!search)}
+                    onBlur={() => {
+                      setSearch(false);
+                      handleSearchClick(false);
+                    }}
+                    onInput={(e) => handleSearchQuery(e)}
                   />
                 </div>
               ) : (
@@ -136,6 +133,8 @@ export default function SearchBar(props) {
                   input: classes.inputInput,
                 }}
                 inputProps={{ 'aria-label': 'search' }}
+                onClick={() => handleSearchClick(true)}
+                onBlur={() => handleSearchClick(false)}
                 onInput={(e) => handleSearchQuery(e)}
               />
             </div>
