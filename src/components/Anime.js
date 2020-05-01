@@ -8,6 +8,8 @@ import SearchBar from './SearchBar';
 
 const title = `Anime for all your needs!`;
 const topAnimeToReturn = 5;
+const fetchURL = `https://api.jikan.moe/v3/top/anime`;
+
 class Anime extends Component {
   constructor() {
     super();
@@ -23,15 +25,17 @@ class Anime extends Component {
   componentDidMount() {
     const getTopAnime = async () => {
       const { offset } = this.state;
-      const resp = await fetch(`https://api.jikan.moe/v3/top/anime`);
+      const resp = await fetch(fetchURL);
       const data = await resp.json();
-      console.log(data.top.slice());
-      console.log(data.top.length / topAnimeToReturn);
-      const top5 = data.top.slice(offset, offset + topAnimeToReturn);
-      this.setState({
-        topAnime: [...top5],
-        totalPages: data.top.length / topAnimeToReturn,
-      });
+      if (data.status !== 400) {
+        const top5 = data.top.slice(offset, offset + topAnimeToReturn);
+        this.setState({
+          topAnime: [...top5],
+          totalPages: data.top.length / topAnimeToReturn,
+        });
+      } else {
+        throw data.message;
+      }
     };
     getTopAnime();
   }
@@ -44,7 +48,7 @@ class Anime extends Component {
       async () => {
         const { currentPage } = this.state;
         const offset = currentPage * topAnimeToReturn - 5;
-        const resp = await fetch(`https://api.jikan.moe/v3/top/anime`);
+        const resp = await fetch(fetchURL);
         const data = await resp.json();
         const top5 = data.top.slice(offset, offset + topAnimeToReturn);
         this.setState({
@@ -63,20 +67,26 @@ class Anime extends Component {
           <h1>Top Anime!</h1>
         </Box>
         <Grid container justify='space-evenly'>
-          {topAnime.map((anime) => (
-            <Card
-              key={anime.mal_id}
-              image={anime.image_url}
-              title={anime.title}
-              startDate={anime.start_date}
-            />
-          ))}
+          {topAnime.length === 0 ? (
+            <h1>Loading</h1>
+          ) : (
+            topAnime.map((anime) => (
+              <Card
+                key={anime.mal_id}
+                image={anime.image_url}
+                title={anime.title}
+                startDate={anime.start_date}
+              />
+            ))
+          )}
         </Grid>
-        <Pagination
-          count={totalPages}
-          page={currentPage}
-          onChange={(e, page) => this.fetchNewPage(page)}
-        />
+        <Box display='flex' justifyContent='center'>
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            onChange={(e, page) => this.fetchNewPage(page)}
+          />
+        </Box>
       </>
     );
   }
