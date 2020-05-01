@@ -1,10 +1,9 @@
 import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import Pagination from '@material-ui/lab/Pagination';
 import React, { Component } from 'react';
 
-import Card from './Card';
 import SearchBar from './SearchBar';
+
+import Section from './Section';
 
 const title = `Anime for all your needs!`;
 const topItemsToReturn = 5;
@@ -64,46 +63,50 @@ class Anime extends Component {
     );
   }
 
-  fetchNewPage(page, subtype) {
-    if (subtype === subTypeAnime) {
-      this.setState(
-        {
-          currentPageAnime: page,
-        },
-        async () => {
-          const { currentPageAnime } = this.state;
-          const offset = currentPageAnime * topItemsToReturn - 5;
-          const resp = await fetch(fetchAnime);
-          const data = await resp.json();
-          const top5 = data.top.slice(offset, offset + topItemsToReturn);
-          this.setState({
-            topAnime: [...top5],
-          });
-        },
-      );
-    } else if (subtype === subTypeManga) {
-      this.setState(
-        {
-          currentPageManga: page,
-        },
-        async () => {
-          const { currentPageManga } = this.state;
-          const offset = currentPageManga * topItemsToReturn - 5;
-          const resp = await fetch(fetchManga);
-          const data = await resp.json();
-          const top5 = data.top.slice(offset, offset + topItemsToReturn);
-          this.setState({
-            topManga: [...top5],
-          });
-        },
-      );
-    }
-  }
+  // fetchNewPage(page, subtype) {
+  //   if (subtype === subTypeAnime) {
+  //     this.setState(
+  //       {
+  //         currentPageAnime: page,
+  //       },
+  //       async () => {
+  //         const { currentPageAnime } = this.state;
+  //         const offset = currentPageAnime * topItemsToReturn - 5;
+  //         const resp = await fetch(fetchAnime);
+  //         const data = await resp.json();
+  //         const top5 = data.top.slice(offset, offset + topItemsToReturn);
+  //         this.setState({
+  //           topAnime: [...top5],
+  //         });
+  //       },
+  //     );
+  //   } else if (subtype === subTypeManga) {
+  //     this.setState(
+  //       {
+  //         currentPageManga: page,
+  //       },
+  //       async () => {
+  //         const { currentPageManga } = this.state;
+  //         const offset = currentPageManga * topItemsToReturn - 5;
+  //         const resp = await fetch(fetchManga);
+  //         const data = await resp.json();
+  //         const top5 = data.top.slice(offset, offset + topItemsToReturn);
+  //         this.setState({
+  //           topManga: [...top5],
+  //         });
+  //       },
+  //     );
+  //   }
+  // }
 
   handleSearch = (clicked) => {
     if (clicked) {
       this.setState({
         search: true,
+      });
+    } else {
+      this.setState({
+        search: false,
       });
     }
   };
@@ -114,7 +117,8 @@ class Anime extends Component {
       topManga,
       totalPagesAnime,
       totalPagesManga,
-      currentPage,
+      currentPageAnime,
+      currentPageManga,
       search,
     } = this.state;
     return (
@@ -124,59 +128,21 @@ class Anime extends Component {
           searchRef={this.searchInput}
           handleSearchClick={this.handleSearch}
         />
-        <Box mt={10}>
-          <Box display='flex' flexDirection='column' alignItems='center'>
-            <h1>Top Anime!</h1>
-          </Box>
-          <Grid container justify='space-evenly'>
-            {topAnime.length === 0 ? (
-              <h1>Loading</h1>
-            ) : (
-              topAnime.map((anime) => (
-                <Card
-                  key={anime.mal_id}
-                  image={anime.image_url}
-                  title={anime.title}
-                  startDate={anime.start_date}
-                />
-              ))
-            )}
-          </Grid>
-          <Box display='flex' justifyContent='center'>
-            <Pagination
-              count={totalPagesAnime}
-              page={currentPage}
-              onChange={(e, page) => this.fetchNewPage(page, subTypeAnime)}
-            />
-          </Box>
-        </Box>
+        <Section
+          sectionTitle='Top Anime!'
+          topSubtype={topAnime}
+          totalPages={totalPagesAnime}
+          currentPage={currentPageAnime}
+          subType={subTypeAnime}
+        />
         <hr />
-        <Box mt={10}>
-          <Box display='flex' flexDirection='column' alignItems='center'>
-            <h1>Top Manga!</h1>
-          </Box>
-          <Grid container justify='space-evenly'>
-            {topManga.length === 0 ? (
-              <h1>Loading</h1>
-            ) : (
-              topManga.map((manga) => (
-                <Card
-                  key={manga.mal_id}
-                  image={manga.image_url}
-                  title={manga.title}
-                  startDate={manga.start_date}
-                />
-              ))
-            )}
-          </Grid>
-          <Box display='flex' justifyContent='center'>
-            <Pagination
-              count={totalPagesManga}
-              page={currentPage}
-              onChange={(e, page) => this.fetchNewPage(page, subTypeManga)}
-            />
-          </Box>
-        </Box>
+        <Section
+          sectionTitle='Top Manga!'
+          topSubtype={topManga}
+          totalPages={totalPagesManga}
+          currentPage={currentPageManga}
+          subType={subTypeManga}
+        />
         <hr />
         {search ? (
           <h1>Search</h1>

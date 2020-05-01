@@ -64,6 +64,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const handleSearchQuery = async (e) => {
+  // using the search endpoint
+  const responseAnime = await fetch(
+    `https://api.jikan.moe/v3/search/anime?q=${e.target.value}`,
+  );
+
+  const animeJSON = await responseAnime.json();
+  console.log(animeJSON);
+};
+
 export default function SearchBar(props) {
   const classes = useStyles();
   const [search, setSearch] = useState(false);
@@ -80,7 +90,11 @@ export default function SearchBar(props) {
   const { handleSearchClick } = props;
 
   return (
-    <div className={classes.root} onClick={() => handleSearchClick(true)}>
+    <div
+      className={classes.root}
+      onClick={() => handleSearchClick(true)}
+      onBlur={() => handleSearchClick(false)}
+    >
       <AppBar position='fixed'>
         <Toolbar>
           <IconButton
@@ -120,13 +134,13 @@ export default function SearchBar(props) {
                 <SearchIcon />
               </div>
               <InputBase
-                placeholder='Search…'
+                placeholder='Search Anime'
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
                 }}
                 inputProps={{ 'aria-label': 'search' }}
-                onInput={(e) => console.log(e.target.value)}
+                onInput={(e) => handleSearchQuery(e)}
               />
             </div>
           )}
