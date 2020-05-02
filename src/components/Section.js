@@ -17,18 +17,40 @@ const Section = ({
   offset,
   topItemsToReturn,
 }) => {
+  let sizing;
+  if (topSubtype.slice(offset, offset + topItemsToReturn).length === 1) {
+    sizing = 12;
+  } else if (topSubtype.slice(offset, offset + topItemsToReturn).length === 2) {
+    sizing = 6;
+  } else if (topSubtype.slice(offset, offset + topItemsToReturn).length === 3) {
+    sizing = 4;
+  } else {
+    sizing = 3;
+  }
+
   return (
-    <Box mt={10}>
-      <Box display='flex' flexDirection='column' alignItems='center'>
-        <h1>{sectionTitle}</h1>
-      </Box>
-      <Grid container justify='space-evenly'>
+    <Box
+      mt={10}
+      width='100%'
+      display='flex'
+      flexDirection='column'
+      alignItems='center'
+    >
+      <h1>{sectionTitle}</h1>
+      <Grid container justify='center'>
         {topSubtype.length === 0 && subType !== `search` ? (
           <CircularProgress />
         ) : (
-          topSubtype
-            .slice(offset, offset + topItemsToReturn)
-            .map((subtype) => (
+          topSubtype.slice(offset, offset + topItemsToReturn).map((subtype) => (
+            <Grid
+              container
+              item
+              justify='center'
+              xs={12}
+              md={6}
+              lg={6}
+              xl={sizing}
+            >
               <Card
                 key={subtype.mal_id}
                 id={subtype.mal_id}
@@ -36,7 +58,8 @@ const Section = ({
                 title={subtype.title}
                 startDate={subtype.start_date}
               />
-            ))
+            </Grid>
+          ))
         )}
       </Grid>
       <Box display='flex' justifyContent='center'>

@@ -1,3 +1,7 @@
 .animeImages {
   margin: 2rem;
 }
+
+.mobileModal {
+  display: flex;
+}

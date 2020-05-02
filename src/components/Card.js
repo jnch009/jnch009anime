@@ -14,7 +14,15 @@ const Card = ({ id, image, title, startDate }) => {
   const [modal, setModal] = useState(false);
 
   return (
-    <Box bgcolor={color} m={3} p={7}>
+    <Box
+      bgcolor={color}
+      display='flex'
+      flexDirection='column'
+      alignItems='center'
+      height={500}
+      my={2}
+      p='5rem'
+    >
       <Details openModal={modal} setModal={setModal} id={id} image={image} />
       <Box
         className={hoverDetails ? 'image hvr-fade' : null}
@@ -26,8 +34,6 @@ const Card = ({ id, image, title, startDate }) => {
       >
         <img
           className={hoverDetails ? 'imgOpacity' : 'imgHover'}
-          width={250}
-          height={400}
           src={image}
           alt=''
         />

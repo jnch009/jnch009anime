@@ -3,6 +3,7 @@ import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Fade from '@material-ui/core/Fade';
 import Modal from '@material-ui/core/Modal';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 
@@ -37,6 +38,8 @@ export default function Details({ openModal, setModal, id, image }) {
   const [characterDetails, setCharacterDetails] = useState([]);
   const [characterError, setcharacterError] = useState('');
   const [error, setError] = useState('');
+
+  const matches = useMediaQuery('(max-width:480px)');
 
   useEffect(() => {
     if (openModal) {
@@ -95,11 +98,13 @@ export default function Details({ openModal, setModal, id, image }) {
         }}
       >
         <Fade in={openModal}>
+          {/* {matches ?  :} */}
+
           <div
             className={classes.paper}
-            style={{ overflowY: 'scroll', height: '75vh', width: '35vw' }} // media query needed here
+            style={{ overflowY: 'scroll', height: '75vh', width: '70vw' }} // media query needed here
           >
-            <Box display='flex' justifyContent='center'>
+            <Box display='flex' flexDirection='column' alignItems='center'>
               <Box m={5}>
                 <img src={image} alt='' width={300} height={500} />
               </Box>
@@ -119,11 +124,12 @@ export default function Details({ openModal, setModal, id, image }) {
               </Box>
             </Box>
 
+            <h1>Cast</h1>
             <Box
               display='flex'
+              flexDirection='column'
               width='inherit'
-              justifyContent='space-between'
-              flexWrap='wrap'
+              alignItems='center'
             >
               {characterDetails.length !== 0 ? (
                 characterDetails.map((character) => (

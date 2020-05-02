@@ -10,7 +10,7 @@ const fetchManga = `https://api.jikan.moe/v3/top/manga`;
 const subTypeAnime = 'anime';
 const subTypeManga = 'manga';
 const subTypeSearch = 'search';
-const topItemsToReturn = 5;
+const topItemsToReturn = 4;
 
 class Anime extends Component {
   constructor() {
@@ -48,20 +48,23 @@ class Anime extends Component {
       } else {
         throw data.message;
       }
-      return data.top.length / topItemsToReturn;
+
+      return Math.ceil(data.top.length / topItemsToReturn);
     };
 
     getTop(fetchAnime, subTypeAnime).then((data) => {
+      console.log(data);
       this.setState({
         totalPagesAnime: data,
       });
     });
 
-    getTop(fetchManga, subTypeManga).then((data) =>
+    getTop(fetchManga, subTypeManga).then((data) => {
+      console.log(data);
       this.setState({
         totalPagesManga: data,
-      }),
-    );
+      });
+    });
   }
 
   fetchNewPage = (page, subtype) => {
@@ -143,11 +146,13 @@ class Anime extends Component {
                 <Section
                   sectionTitle='Search Results'
                   topSubtype={queryResults}
-                  totalPages={queryResults.length / 5}
+                  totalPages={Math.ceil(queryResults.length / topItemsToReturn)}
                   currentPage={currentPageSearch}
                   subType={subTypeSearch}
                   newPage={this.fetchNewPage}
-                  offset={currentPageSearch * topItemsToReturn - 5}
+                  offset={
+                    currentPageSearch * topItemsToReturn - topItemsToReturn
+                  }
                   topItemsToReturn={topItemsToReturn}
                 />
               </>
@@ -162,7 +167,7 @@ class Anime extends Component {
               currentPage={currentPageAnime}
               subType={subTypeAnime}
               newPage={this.fetchNewPage}
-              offset={currentPageAnime * topItemsToReturn - 5}
+              offset={currentPageAnime * topItemsToReturn - topItemsToReturn}
               topItemsToReturn={topItemsToReturn}
             />
             <hr />
@@ -173,7 +178,7 @@ class Anime extends Component {
               currentPage={currentPageManga}
               subType={subTypeManga}
               newPage={this.fetchNewPage}
-              offset={currentPageManga * topItemsToReturn - 5}
+              offset={currentPageManga * topItemsToReturn - topItemsToReturn}
               topItemsToReturn={topItemsToReturn}
             />
             <hr />
