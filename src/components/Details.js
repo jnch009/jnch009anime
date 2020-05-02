@@ -64,7 +64,7 @@ export default function Details({ openModal, setModal, id, image }) {
           }
           return resp.json();
         })
-        .then((data) => setCharacterDetails([...data.characters.slice(0, 4)]))
+        .then((data) => setCharacterDetails([...data.characters]))
         .catch((err) => console.log(`Issues fetching: ${err}`));
     }
   }, [openModal, id]);
@@ -126,7 +126,7 @@ export default function Details({ openModal, setModal, id, image }) {
                     id={character.mal_id}
                     image={character.image_url}
                     title={character.name}
-                    startDate={character.voice_actors[0].name}
+                    startDate={character?.voice_actors[0]?.name}
                   />
                 ))
               ) : (
