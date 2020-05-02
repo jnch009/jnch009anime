@@ -1,4 +1,5 @@
 import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 import React, { Component } from 'react';
 
 import SearchBar from './SearchBar';
@@ -197,6 +198,11 @@ class Anime extends Component {
             </Box>
           </Box>
         )}
+        <footer>
+          <Typography align='center'>
+            <p>Developed by: Jeremy Ng Cheng Hin</p>
+          </Typography>
+        </footer>
       </>
     );
   }
