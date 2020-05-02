@@ -125,12 +125,7 @@ export default function Details({ openModal, setModal, id, image }) {
             </Box>
 
             <h1>Cast</h1>
-            <Box
-              display='flex'
-              flexDirection='column'
-              width='inherit'
-              alignItems='center'
-            >
+            <Box display='flex' flexDirection='column'>
               {characterDetails.length !== 0 ? (
                 characterDetails.map((character) => (
                   <Card
