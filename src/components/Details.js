@@ -3,8 +3,8 @@ import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Fade from '@material-ui/core/Fade';
 import Modal from '@material-ui/core/Modal';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import React, { useEffect, useState } from 'react';
 
 import Card from './Card';
@@ -43,7 +43,7 @@ export default function Details({ openModal, setModal, id, image, type }) {
   const [characterError, setcharacterError] = useState('');
   const [error, setError] = useState('');
 
-  const matches = useMediaQuery('(max-width:600px)');
+  const matches = useMediaQuery('(max-width:800px)');
 
   useEffect(() => {
     if (openModal) {
