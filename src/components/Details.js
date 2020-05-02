@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 const subTypeAnime = 'anime';
 const subTypeManga = 'manga';
+const subTypeSearch = 'search';
 
 export default function Details({ openModal, setModal, id, image, type }) {
   const classes = useStyles();
@@ -43,6 +44,19 @@ export default function Details({ openModal, setModal, id, image, type }) {
   const [error, setError] = useState('');
 
   const matches = useMediaQuery('(max-width:480px)');
+
+  useEffect(() => {
+    if (openModal) {
+      // console.log(id);
+      setOpen(true);
+
+      if (checkAnimeOrSearch()) {
+        fetchDetails(id, subTypeAnime);
+      } else if (type === subTypeManga) {
+        fetchDetails(id, subTypeManga);
+      }
+    }
+  }, [openModal, id]);
 
   const fetchDetails = (id, type) => {
     fetch(`https://api.jikan.moe/v3/${type}/${id}`)
@@ -79,18 +93,12 @@ export default function Details({ openModal, setModal, id, image, type }) {
       .catch((err) => console.log(`Issues fetching: ${err}`));
   };
 
-  useEffect(() => {
-    if (openModal) {
-      console.log(id);
-      setOpen(true);
-
-      if (type === subTypeAnime) {
-        fetchDetails(id, subTypeAnime);
-      } else if (type === subTypeManga) {
-        fetchDetails(id, subTypeManga);
-      }
+  const checkAnimeOrSearch = () => {
+    if (type === subTypeAnime || type === subTypeSearch) {
+      return true;
     }
-  }, [openModal, id]);
+    return false;
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -142,7 +150,7 @@ export default function Details({ openModal, setModal, id, image, type }) {
                 {characterDetails.length !== 0 ? (
                   characterDetails.map((character) => (
                     <>
-                      {type === subTypeAnime ? (
+                      {checkAnimeOrSearch() ? (
                         <Card
                           key={character.mal_id}
                           id={character.mal_id}
@@ -205,7 +213,7 @@ export default function Details({ openModal, setModal, id, image, type }) {
                 {characterDetails.length !== 0 ? (
                   characterDetails.map((character) => (
                     <>
-                      {type === subTypeAnime ? (
+                      {checkAnimeOrSearch() ? (
                         <Card
                           key={character.mal_id}
                           id={character.mal_id}
