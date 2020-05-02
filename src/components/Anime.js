@@ -152,7 +152,7 @@ class Anime extends Component {
             )}
           </>
         ) : (
-          <>
+          <Box display='flex' flexDirection='column' alignItems='center'>
             <Section
               sectionTitle='Top Anime!'
               topSubtype={topAnime}
@@ -188,7 +188,7 @@ class Anime extends Component {
                 </a>
               </p>
             </Box>
-          </>
+          </Box>
         )}
       </>
     );
