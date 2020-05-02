@@ -15,7 +15,7 @@ const Card = ({ id, image, title, startDate }) => {
 
   return (
     <Box bgcolor={color} m={3} p={7}>
-      <Details openModal={modal} setModal={setModal} id={id} />
+      <Details openModal={modal} setModal={setModal} id={id} image={image} />
       <Box
         className={hoverDetails ? 'image hvr-fade' : null}
         onPointerEnter={() => {

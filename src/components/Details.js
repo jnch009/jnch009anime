@@ -1,9 +1,12 @@
 import Backdrop from '@material-ui/core/Backdrop';
 import Box from '@material-ui/core/Box';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Fade from '@material-ui/core/Fade';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
+
+import Card from './Card';
 
 import './Details.css';
 
@@ -19,31 +22,49 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
+  root: {
+    display: 'flex',
+    '& > * + *': {
+      marginLeft: theme.spacing(2),
+    },
+  },
 }));
 
-export default function Details({ openModal, setModal, id }) {
+export default function Details({ openModal, setModal, id, image }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [images, setImages] = useState([]);
-  const [imageError, setImageError] = useState('');
+  const [modalDetails, setModalDetails] = useState({});
+  const [characterDetails, setCharacterDetails] = useState([]);
+  const [characterError, setcharacterError] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (openModal) {
       console.log(id);
       setOpen(true);
-      fetch(`https://api.jikan.moe/v3/anime/${id}/pictures`)
+
+      fetch(`https://api.jikan.moe/v3/anime/${id}`)
         .then((resp) => {
           if (resp.status === 404) {
-            setImageError('404: Resource could not be found');
+            setError('404: Anime could not be found');
           } else if (resp.status === 403) {
-            setImageError('403: Try requesting this resource later');
+            setError('403: Try requesting this resource later');
           }
           return resp.json();
         })
-        .then((data) => data.pictures)
-        .then((pictures) =>
-          setImages([...pictures.map((picture) => picture.small).slice(0, 3)]),
-        )
+        .then((data) => setModalDetails({ ...data }))
+        .catch((err) => console.log(`Issues fetching: ${err}`));
+
+      fetch(`https://api.jikan.moe/v3/anime/${id}/characters_staff`)
+        .then((resp) => {
+          if (resp.status === 404) {
+            setcharacterError('404: Characters could not be found');
+          } else if (resp.status === 403) {
+            setcharacterError('403: Try requesting this resource later');
+          }
+          return resp.json();
+        })
+        .then((data) => setCharacterDetails([...data.characters.slice(0, 4)]))
         .catch((err) => console.log(`Issues fetching: ${err}`));
     }
   }, [openModal, id]);
@@ -70,27 +91,48 @@ export default function Details({ openModal, setModal, id }) {
         <Fade in={openModal}>
           <div
             className={classes.paper}
-            style={{ overflowY: 'scroll', height: '75vh' }} // media query needed here
+            style={{ overflowY: 'scroll', height: '75vh', width: '35vw' }} // media query needed here
           >
-            <h2 id='transition-modal-title'>Transition modal</h2>
-            <p id='transition-modal-description'>
-              react-transition-group animates me.
-            </p>
-            <Box display='flex' flexDirection='column' alignItems='center'>
-              {images.length !== 0 ? (
-                images.map((image) => (
-                  <img
-                    className='animeImages'
-                    key={image}
-                    src={image}
-                    width={150}
-                    height={200}
-                    alt=''
+            <Box display='flex' justifyContent='center'>
+              <Box m={5}>
+                <img src={image} alt='' width={300} height={500} />
+              </Box>
+              <Box display='flex' flexDirection='column'>
+                {Object.keys(modalDetails).length !== 0 ? (
+                  <>
+                    <h2>{modalDetails.title}</h2>
+                    <h3>Score: {modalDetails.score} / 10</h3>
+                    <p>{modalDetails.synopsis}</p>
+                  </>
+                ) : (
+                  <>
+                    <CircularProgress />
+                    <h1>{error}</h1>
+                  </>
+                )}
+              </Box>
+            </Box>
+
+            <Box
+              display='flex'
+              width='inherit'
+              justifyContent='space-between'
+              flexWrap='wrap'
+            >
+              {characterDetails.length !== 0 ? (
+                characterDetails.map((character) => (
+                  <Card
+                    key={character.mal_id}
+                    id={character.mal_id}
+                    image={character.image_url}
+                    title={character.name}
+                    startDate={character.voice_actors[0].name}
                   />
                 ))
               ) : (
                 <>
-                  <h1>{imageError}</h1>
+                  <CircularProgress />
+                  <h1>{characterError}</h1>
                 </>
               )}
             </Box>
