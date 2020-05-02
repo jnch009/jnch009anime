@@ -43,7 +43,7 @@ export default function Details({ openModal, setModal, id, image, type }) {
   const [characterError, setcharacterError] = useState('');
   const [error, setError] = useState('');
 
-  const matches = useMediaQuery('(max-width:480px)');
+  const matches = useMediaQuery('(max-width:600px)');
 
   useEffect(() => {
     if (openModal) {
