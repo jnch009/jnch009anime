@@ -139,16 +139,18 @@ class Anime extends Component {
                 <h1>{queryError}</h1>
               </Box>
             ) : (
-              <Section
-                sectionTitle='Search Results'
-                topSubtype={queryResults}
-                totalPages={queryResults.length / 5}
-                currentPage={currentPageSearch}
-                subType={subTypeSearch}
-                newPage={this.fetchNewPage}
-                offset={currentPageSearch * topItemsToReturn - 5}
-                topItemsToReturn={topItemsToReturn}
-              />
+              <>
+                <Section
+                  sectionTitle='Search Results'
+                  topSubtype={queryResults}
+                  totalPages={queryResults.length / 5}
+                  currentPage={currentPageSearch}
+                  subType={subTypeSearch}
+                  newPage={this.fetchNewPage}
+                  offset={currentPageSearch * topItemsToReturn - 5}
+                  topItemsToReturn={topItemsToReturn}
+                />
+              </>
             )}
           </>
         ) : (

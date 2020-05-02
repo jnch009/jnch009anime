@@ -64,7 +64,13 @@ export default function Details({ openModal, setModal, id, image }) {
           }
           return resp.json();
         })
-        .then((data) => setCharacterDetails([...data.characters]))
+        .then((data) => {
+          if (data.characters.length === 0) {
+            setcharacterError('No Characters Found');
+          } else {
+            setCharacterDetails([...data.characters]);
+          }
+        })
         .catch((err) => console.log(`Issues fetching: ${err}`));
     }
   }, [openModal, id]);
@@ -131,8 +137,11 @@ export default function Details({ openModal, setModal, id, image }) {
                 ))
               ) : (
                 <>
-                  <CircularProgress />
-                  <h1>{characterError}</h1>
+                  {characterError !== '' ? (
+                    <h1>{characterError}</h1>
+                  ) : (
+                    <CircularProgress />
+                  )}
                 </>
               )}
             </Box>

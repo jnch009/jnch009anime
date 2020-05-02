@@ -1,4 +1,5 @@
 import Box from '@material-ui/core/Box';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import Pagination from '@material-ui/lab/Pagination';
 import PropTypes from 'prop-types';
@@ -23,7 +24,7 @@ const Section = ({
       </Box>
       <Grid container justify='space-evenly'>
         {topSubtype.length === 0 && subType !== `search` ? (
-          <h1>Loading</h1>
+          <CircularProgress />
         ) : (
           topSubtype
             .slice(offset, offset + topItemsToReturn)
