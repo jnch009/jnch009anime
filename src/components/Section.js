@@ -43,6 +43,7 @@ const Section = ({
         ) : (
           topSubtype.slice(offset, offset + topItemsToReturn).map((subtype) => (
             <Grid
+              key={subtype.mal_id}
               container
               item
               justify='center'
@@ -57,6 +58,7 @@ const Section = ({
                 image={subtype.image_url}
                 title={subtype.title}
                 startDate={subtype.start_date}
+                type={subType}
               />
             </Grid>
           ))

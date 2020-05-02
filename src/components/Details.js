@@ -31,7 +31,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Details({ openModal, setModal, id, image }) {
+const subTypeAnime = 'anime';
+const subTypeManga = 'manga';
+
+export default function Details({ openModal, setModal, id, image, type }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [modalDetails, setModalDetails] = useState({});
@@ -41,40 +44,51 @@ export default function Details({ openModal, setModal, id, image }) {
 
   const matches = useMediaQuery('(max-width:480px)');
 
+  const fetchDetails = (id, type) => {
+    fetch(`https://api.jikan.moe/v3/${type}/${id}`)
+      .then((resp) => {
+        if (resp.status === 404) {
+          setError('404: Anime could not be found');
+        } else if (resp.status === 403) {
+          setError('403: Try requesting this resource later');
+        }
+        return resp.json();
+      })
+      .then((data) => setModalDetails({ ...data }))
+      .catch((err) => console.log(`Issues fetching: ${err}`));
+
+    const characterURL =
+      type === subTypeAnime ? 'characters_staff' : 'characters';
+
+    fetch(`https://api.jikan.moe/v3/${type}/${id}/${characterURL}`)
+      .then((resp) => {
+        if (resp.status === 404) {
+          setcharacterError('404: Characters could not be found');
+        } else if (resp.status === 403) {
+          setcharacterError('403: Try requesting this resource later');
+        }
+        return resp.json();
+      })
+      .then((data) => {
+        if (data.characters.length === 0) {
+          setcharacterError('No Characters Found');
+        } else {
+          setCharacterDetails([...data.characters]);
+        }
+      })
+      .catch((err) => console.log(`Issues fetching: ${err}`));
+  };
+
   useEffect(() => {
     if (openModal) {
       console.log(id);
       setOpen(true);
 
-      fetch(`https://api.jikan.moe/v3/anime/${id}`)
-        .then((resp) => {
-          if (resp.status === 404) {
-            setError('404: Anime could not be found');
-          } else if (resp.status === 403) {
-            setError('403: Try requesting this resource later');
-          }
-          return resp.json();
-        })
-        .then((data) => setModalDetails({ ...data }))
-        .catch((err) => console.log(`Issues fetching: ${err}`));
-
-      fetch(`https://api.jikan.moe/v3/anime/${id}/characters_staff`)
-        .then((resp) => {
-          if (resp.status === 404) {
-            setcharacterError('404: Characters could not be found');
-          } else if (resp.status === 403) {
-            setcharacterError('403: Try requesting this resource later');
-          }
-          return resp.json();
-        })
-        .then((data) => {
-          if (data.characters.length === 0) {
-            setcharacterError('No Characters Found');
-          } else {
-            setCharacterDetails([...data.characters]);
-          }
-        })
-        .catch((err) => console.log(`Issues fetching: ${err}`));
+      if (type === subTypeAnime) {
+        fetchDetails(id, subTypeAnime);
+      } else if (type === subTypeManga) {
+        fetchDetails(id, subTypeManga);
+      }
     }
   }, [openModal, id]);
 
@@ -127,13 +141,24 @@ export default function Details({ openModal, setModal, id, image }) {
               <Box display='flex' flexDirection='column'>
                 {characterDetails.length !== 0 ? (
                   characterDetails.map((character) => (
-                    <Card
-                      key={character.mal_id}
-                      id={character.mal_id}
-                      image={character.image_url}
-                      title={character.name}
-                      startDate={character?.voice_actors[0]?.name}
-                    />
+                    <>
+                      {type === subTypeAnime ? (
+                        <Card
+                          key={character.mal_id}
+                          id={character.mal_id}
+                          image={character.image_url}
+                          title={character.name}
+                          startDate={character?.voice_actors[0]?.name}
+                        />
+                      ) : (
+                        <Card
+                          key={character.mal_id}
+                          id={character.mal_id}
+                          image={character.image_url}
+                          title={character.name}
+                        />
+                      )}
+                    </>
                   ))
                 ) : (
                   <>
@@ -179,13 +204,24 @@ export default function Details({ openModal, setModal, id, image }) {
               >
                 {characterDetails.length !== 0 ? (
                   characterDetails.map((character) => (
-                    <Card
-                      key={character.mal_id}
-                      id={character.mal_id}
-                      image={character.image_url}
-                      title={character.name}
-                      startDate={character?.voice_actors[0]?.name}
-                    />
+                    <>
+                      {type === subTypeAnime ? (
+                        <Card
+                          key={character.mal_id}
+                          id={character.mal_id}
+                          image={character.image_url}
+                          title={character.name}
+                          startDate={character?.voice_actors[0]?.name}
+                        />
+                      ) : (
+                        <Card
+                          key={character.mal_id}
+                          id={character.mal_id}
+                          image={character.image_url}
+                          title={character.name}
+                        />
+                      )}
+                    </>
                   ))
                 ) : (
                   <>

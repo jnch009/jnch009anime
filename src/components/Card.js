@@ -9,7 +9,7 @@ import './Card.css';
 
 const color = teal[500];
 
-const Card = ({ id, image, title, startDate }) => {
+const Card = ({ id, image, title, startDate, type }) => {
   const [hoverDetails, setHoverDetails] = useState(false);
   const [modal, setModal] = useState(false);
 
@@ -23,7 +23,13 @@ const Card = ({ id, image, title, startDate }) => {
       my={2}
       p='5rem'
     >
-      <Details openModal={modal} setModal={setModal} id={id} image={image} />
+      <Details
+        openModal={modal}
+        setModal={setModal}
+        id={id}
+        image={image}
+        type={type}
+      />
       <Box
         className={hoverDetails ? 'image hvr-fade' : null}
         onPointerEnter={() => {
