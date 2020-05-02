@@ -6,6 +6,6 @@ The Anime and Manga and Search endpoints were utilized from the Jikan API (https
 
 Future Ideas I have include: the ability to search for Manga as well, adding the voice actors' pictures to the detail modal, and the ability to view more detail about each character as well.
 
-Please have a look at: 
+Please have a look at: https://peaceful-payne-347e57.netlify.app/
 
 Thank you!
