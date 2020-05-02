@@ -98,55 +98,107 @@ export default function Details({ openModal, setModal, id, image }) {
         }}
       >
         <Fade in={openModal}>
-          {/* {matches ?  :} */}
-
-          <div
-            className={classes.paper}
-            style={{ overflowY: 'scroll', height: '75vh', width: '70vw' }} // media query needed here
-          >
-            <Box display='flex' flexDirection='column' alignItems='center'>
-              <Box m={5}>
-                <img src={image} alt='' width={300} height={500} />
+          {matches ? (
+            <div
+              className={classes.paper}
+              style={{ overflowY: 'scroll', height: '75vh', width: '70vw' }} // media query needed here
+            >
+              <Box display='flex' flexDirection='column' alignItems='center'>
+                <Box m={5}>
+                  <img src={image} alt='' width={300} height={500} />
+                </Box>
+                <Box display='flex' flexDirection='column'>
+                  {Object.keys(modalDetails).length !== 0 ? (
+                    <>
+                      <h2>{modalDetails.title}</h2>
+                      <h3>Score: {modalDetails.score} / 10</h3>
+                      <p>{modalDetails.synopsis}</p>
+                    </>
+                  ) : (
+                    <>
+                      <CircularProgress />
+                      <h1>{error}</h1>
+                    </>
+                  )}
+                </Box>
               </Box>
+
+              <h1>Cast</h1>
               <Box display='flex' flexDirection='column'>
-                {Object.keys(modalDetails).length !== 0 ? (
-                  <>
-                    <h2>{modalDetails.title}</h2>
-                    <h3>Score: {modalDetails.score} / 10</h3>
-                    <p>{modalDetails.synopsis}</p>
-                  </>
+                {characterDetails.length !== 0 ? (
+                  characterDetails.map((character) => (
+                    <Card
+                      key={character.mal_id}
+                      id={character.mal_id}
+                      image={character.image_url}
+                      title={character.name}
+                      startDate={character?.voice_actors[0]?.name}
+                    />
+                  ))
                 ) : (
                   <>
-                    <CircularProgress />
-                    <h1>{error}</h1>
+                    {characterError !== '' ? (
+                      <h1>{characterError}</h1>
+                    ) : (
+                      <CircularProgress />
+                    )}
                   </>
                 )}
               </Box>
-            </Box>
-
-            <h1>Cast</h1>
-            <Box display='flex' flexDirection='column'>
-              {characterDetails.length !== 0 ? (
-                characterDetails.map((character) => (
-                  <Card
-                    key={character.mal_id}
-                    id={character.mal_id}
-                    image={character.image_url}
-                    title={character.name}
-                    startDate={character?.voice_actors[0]?.name}
-                  />
-                ))
-              ) : (
-                <>
-                  {characterError !== '' ? (
-                    <h1>{characterError}</h1>
+            </div>
+          ) : (
+            <div
+              className={classes.paper}
+              style={{ overflowY: 'scroll', height: '75vh', width: '70vw' }}
+            >
+              <Box display='flex' flexDirection='row' justifyItems='center'>
+                <Box m={5}>
+                  <img src={image} alt='' width={300} height={500} />
+                </Box>
+                <Box display='flex' flexDirection='column'>
+                  {Object.keys(modalDetails).length !== 0 ? (
+                    <>
+                      <h2>{modalDetails.title}</h2>
+                      <h3>Score: {modalDetails.score} / 10</h3>
+                      <p>{modalDetails.synopsis}</p>
+                    </>
                   ) : (
-                    <CircularProgress />
+                    <>
+                      <CircularProgress />
+                      <h1>{error}</h1>
+                    </>
                   )}
-                </>
-              )}
-            </Box>
-          </div>
+                </Box>
+              </Box>
+
+              <h1>Cast</h1>
+              <Box
+                display='flex'
+                flexWrap='wrap'
+                justifyContent='space-between'
+              >
+                {characterDetails.length !== 0 ? (
+                  characterDetails.map((character) => (
+                    <Card
+                      key={character.mal_id}
+                      id={character.mal_id}
+                      image={character.image_url}
+                      title={character.name}
+                      startDate={character?.voice_actors[0]?.name}
+                    />
+                  ))
+                ) : (
+                  <>
+                    {characterError !== '' ? (
+                      <h1>{characterError}</h1>
+                    ) : (
+                      <CircularProgress />
+                    )}
+                  </>
+                )}
+              </Box>
+            </div>
+          )}
         </Fade>
       </Modal>
     </div>
