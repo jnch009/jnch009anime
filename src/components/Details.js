@@ -184,11 +184,11 @@ export default function Details({ openModal, setModal, id, image, type }) {
               className={classes.paper}
               style={{ overflowY: 'scroll', height: '75vh', width: '70vw' }}
             >
-              <Box display='flex' flexDirection='row' justifyItems='center'>
-                <Box m={5}>
+              <Box>
+                <Box m={5} style={{ float: 'left' }}>
                   <img src={image} alt='' width={300} height={500} />
                 </Box>
-                <Box display='flex' flexDirection='column'>
+                <Box>
                   {Object.keys(modalDetails).length !== 0 ? (
                     <>
                       <h2>{modalDetails.title}</h2>
