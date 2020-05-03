@@ -1,5 +1,6 @@
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -60,6 +61,14 @@ const useStyles = makeStyles((theme) => ({
       '&:focus': {
         width: '20ch',
       },
+    },
+  },
+  clearSearch: {
+    cursor: 'pointer',
+    color: 'white',
+    transition: 'color 0.5s',
+    '&:hover': {
+      color: 'black',
     },
   },
 }));
@@ -133,6 +142,16 @@ export default function SearchBar(props) {
                   input: classes.inputInput,
                 }}
                 inputProps={{ 'aria-label': 'search' }}
+                endAdornment={
+                  <InputAdornment
+                    position='start'
+                    onClick={() => console.log('clicked!')}
+                  >
+                    <i
+                      className={`fas fa-times-circle ${classes.clearSearch}`}
+                    ></i>
+                  </InputAdornment>
+                }
                 onClick={() => handleSearchClick(true)}
                 onBlur={() => handleSearchClick(false)}
                 onInput={(e) => handleSearchQuery(e)}
