@@ -27,6 +27,7 @@ class Anime extends Component {
       totalPagesManga: 0,
       offset: 0,
       search: false,
+      searchQuery: '',
       queryResults: [],
       queryError: '',
     };
@@ -54,14 +55,12 @@ class Anime extends Component {
     };
 
     getTop(fetchAnime, subTypeAnime).then((data) => {
-      console.log(data);
       this.setState({
         totalPagesAnime: data,
       });
     });
 
     getTop(fetchManga, subTypeManga).then((data) => {
-      console.log(data);
       this.setState({
         totalPagesManga: data,
       });
@@ -97,9 +96,15 @@ class Anime extends Component {
   };
 
   handleSearchQuery = async (e) => {
+    await this.setState({
+      searchQuery: e.target.value
+    })
+    
+    const { searchQuery } = this.state;
+    
     // using the search endpoint
     const responseAnime = await fetch(
-      `https://api.jikan.moe/v3/search/anime?q=${e.target.value}`,
+      `https://api.jikan.moe/v3/search/anime?q=${searchQuery}`,
     );
     const animeJSON = await responseAnime.json();
 
