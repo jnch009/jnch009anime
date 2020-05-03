@@ -97,7 +97,7 @@ class Anime extends Component {
 
   handleSearchQuery = async (e) => {
     await this.setState({
-      searchQuery: e.target.value
+      searchQuery: e?.target !== undefined ? e?.target?.value : ''
     })
     
     const { searchQuery } = this.state;
@@ -132,6 +132,7 @@ class Anime extends Component {
       search,
       queryResults,
       queryError,
+      searchQuery,
     } = this.state;
     return (
       <>
@@ -140,8 +141,9 @@ class Anime extends Component {
           searchRef={this.searchInput}
           handleSearchClick={this.handleSearch}
           handleSearchQuery={this.handleSearchQuery}
+          searchQuery={searchQuery}
         />
-        {search || queryResults.length !== 0 ? (
+        {search || searchQuery.length !== 0 ? (
           <>
             {queryError.length !== 0 ? (
               <Box display='flex' justifyContent='center' m={15}>

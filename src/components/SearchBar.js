@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   search: {
+    display: 'flex',
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
@@ -63,6 +64,9 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  adornmentHeight: {
+    height: 'auto',
+  },
   clearSearch: {
     cursor: 'pointer',
     color: 'white',
@@ -86,12 +90,13 @@ export default function SearchBar(props) {
     }
   }, [search, props.searchRef, matches]);
 
-  const { title, handleSearchClick, handleSearchQuery } = props;
+  const { title, handleSearchClick, handleSearchQuery, searchQuery } = props;
 
   SearchBar.propTypes = {
     title: PropTypes.string,
     handleSearchClick: PropTypes.func.isRequired,
     handleSearchQuery: PropTypes.func.isRequired,
+    searchQuery: PropTypes.string,
   };
 
   return (
@@ -142,20 +147,23 @@ export default function SearchBar(props) {
                   input: classes.inputInput,
                 }}
                 inputProps={{ 'aria-label': 'search' }}
-                endAdornment={
-                  <InputAdornment
-                    position='start'
-                    onClick={() => console.log('clicked!')}
-                  >
-                    <i
-                      className={`fas fa-times-circle ${classes.clearSearch}`}
-                    ></i>
-                  </InputAdornment>
-                }
                 onClick={() => handleSearchClick(true)}
                 onBlur={() => handleSearchClick(false)}
                 onInput={(e) => handleSearchQuery(e)}
+                value={searchQuery}
               />
+              {searchQuery ? (
+                <InputAdornment
+                  position='start'
+                  className={classes.adornmentHeight}
+                  onClick={() => {
+                    handleSearchQuery();
+                    handleSearchClick(false);
+                  }}
+                >
+                  <i className={`fas fa-times-circle ${classes.clearSearch}`} />
+                </InputAdornment>
+              ) : null}
             </div>
           )}
         </Toolbar>
