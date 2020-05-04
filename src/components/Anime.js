@@ -162,6 +162,7 @@ class Anime extends Component {
                     currentPageSearch * topItemsToReturn - topItemsToReturn
                   }
                   topItemsToReturn={topItemsToReturn}
+                  searchQuery={searchQuery}
                 />
               </>
             )}

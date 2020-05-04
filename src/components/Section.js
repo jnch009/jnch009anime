@@ -16,6 +16,7 @@ const Section = ({
   newPage,
   offset,
   topItemsToReturn,
+  searchQuery,
 }) => {
   let sizing;
   if (topSubtype.slice(offset, offset + topItemsToReturn).length === 1) {
@@ -38,7 +39,7 @@ const Section = ({
     >
       <h1>{sectionTitle}</h1>
       <Grid container justify='center'>
-        {topSubtype.length === 0 && subType !== `search` ? (
+        {topSubtype.length === 0 && searchQuery?.length >= 1 ? (
           <CircularProgress />
         ) : (
           topSubtype.slice(offset, offset + topItemsToReturn).map((subtype) => (
