@@ -107,13 +107,7 @@ export default function SearchBar(props) {
             {title}
           </Typography>
           {matches ? (
-            <IconButton
-              color='inherit'
-              onClick={() => {
-                handleSearchClick(true);
-                setSearch(true);
-              }}
-            >
+            <IconButton color='inherit'>
               {search ? (
                 <div className={classes.search}>
                   <InputBase
@@ -126,10 +120,31 @@ export default function SearchBar(props) {
                     ref={props.searchRef}
                     onBlur={() => handleSearchClick(false)}
                     onInput={(e) => handleSearchQuery(e)}
+                    value={searchQuery}
                   />
+                  {searchQuery ? (
+                    <InputAdornment
+                      position='start'
+                      className={classes.adornmentHeight}
+                      onClick={() => {
+                        handleSearchQuery();
+                        handleSearchClick(false);
+                        setSearch(false);
+                      }}
+                    >
+                      <i
+                        className={`fas fa-times-circle ${classes.clearSearch}`}
+                      />
+                    </InputAdornment>
+                  ) : null}
                 </div>
               ) : (
-                <SearchIcon />
+                <SearchIcon
+                  onClick={() => {
+                    handleSearchClick(true);
+                    setSearch(true);
+                  }}
+                />
               )}
             </IconButton>
           ) : (
