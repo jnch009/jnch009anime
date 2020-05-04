@@ -124,10 +124,7 @@ export default function SearchBar(props) {
                     }}
                     inputProps={{ 'aria-label': 'search' }}
                     ref={props.searchRef}
-                    onBlur={() => {
-                      setSearch(false);
-                      handleSearchClick(false);
-                    }}
+                    onBlur={() => handleSearchClick(false)}
                     onInput={(e) => handleSearchQuery(e)}
                   />
                 </div>
