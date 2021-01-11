@@ -1,8 +1,7 @@
-import Box from '@material-ui/core/Box';
 import React, { Component } from 'react';
 
 import SearchBar from './SearchBar';
-import Section from './Section';
+import SearchResults from './SearchResults';
 import Credits from './Credits';
 import FAQ from './FAQ';
 import TopResults from './TopResults';
@@ -120,14 +119,6 @@ class Anime extends Component {
   };
 
   render() {
-    const {
-      currentPageSearch,
-      search,
-      queryResults,
-      queryError,
-      searchQuery
-    } = this.state;
-
     const animeProps = {
       topSubtype: this.state.topAnime,
       totalPages: this.state.totalPagesAnime,
@@ -144,6 +135,18 @@ class Anime extends Component {
       offset: helperFunctions.offset(this.state.currentPageManga)
     };
 
+    const searchProps = {
+      topSubtype: this.state.queryResults,
+      totalPages: Math.ceil(
+        this.state.queryResults.length / helperVariables.topItemsToReturn
+      ),
+      currentPage: this.state.currentPageSearch,
+      newPage: this.fetchNewPage,
+      offset: helperFunctions.offset(this.state.currentPageSearch),
+      searchQuery: this.state.searchQuery,
+      queryError: this.state.queryError
+    };
+
     return (
       <>
         <SearchBar
@@ -151,35 +154,10 @@ class Anime extends Component {
           searchRef={this.searchInput}
           handleSearchClick={this.handleSearch}
           handleSearchQuery={this.handleSearchQuery}
-          searchQuery={searchQuery}
+          searchQuery={this.state.searchQuery}
         />
-        {search || searchQuery.length !== 0 ? (
-          <>
-            {queryError.length !== 0 ? (
-              <Box display='flex' justifyContent='center' m={15}>
-                <h1>{queryError}</h1>
-              </Box>
-            ) : (
-              <>
-                <Section
-                  sectionTitle='Search Results'
-                  topSubtype={queryResults}
-                  totalPages={Math.ceil(
-                    queryResults.length / helperVariables.topItemsToReturn
-                  )}
-                  currentPage={currentPageSearch}
-                  subType={helperVariables.subTypeSearch}
-                  newPage={this.fetchNewPage}
-                  offset={
-                    currentPageSearch * helperVariables.topItemsToReturn -
-                    helperVariables.topItemsToReturn
-                  }
-                  topItemsToReturn={helperVariables.topItemsToReturn}
-                  searchQuery={searchQuery}
-                />
-              </>
-            )}
-          </>
+        {this.state.search || this.state.searchQuery.length !== 0 ? (
+          <SearchResults searchProps={searchProps} />
         ) : (
           <TopResults animeProps={animeProps} mangaProps={mangaProps} />
         )}

@@ -8,20 +8,24 @@ import { helperVariables } from '../utility';
 
 import Card from './Card';
 
-const Section = ({
-  sectionTitle,
-  subType,
-  sectionProps,
-  searchQuery,
-}) => {
-  const sectionItemsLength = sectionProps.offset + helperVariables.topItemsToReturn;
+const Section = ({ sectionTitle, subType, sectionProps }) => {
+  const {
+    offset,
+    topSubtype,
+    searchQuery,
+    totalPages,
+    currentPage,
+    newPage
+  } = sectionProps;
+
+  const sectionItemsLength = offset + helperVariables.topItemsToReturn;
 
   let sizing;
-  if (sectionProps.topSubtype.slice(sectionProps.offset, sectionItemsLength).length === 1) {
+  if (topSubtype.slice(offset, sectionItemsLength).length === 1) {
     sizing = 12;
-  } else if (sectionProps.topSubtype.slice(sectionProps.offset, sectionItemsLength).length === 2) {
+  } else if (topSubtype.slice(offset, sectionItemsLength).length === 2) {
     sizing = 6;
-  } else if (sectionProps.topSubtype.slice(sectionProps.offset, sectionItemsLength).length === 3) {
+  } else if (topSubtype.slice(offset, sectionItemsLength).length === 3) {
     sizing = 4;
   } else {
     sizing = 3;
@@ -37,10 +41,10 @@ const Section = ({
     >
       <h1>{sectionTitle}</h1>
       <Grid container justify='center'>
-        {sectionProps.topSubtype.length === 0 && searchQuery?.length >= 1 ? (
+        {topSubtype.length === 0 && searchQuery?.length >= 1 ? (
           <CircularProgress />
         ) : (
-          sectionProps.topSubtype.slice(sectionProps.offset, sectionItemsLength).map((subtype) => (
+          topSubtype.slice(offset, sectionItemsLength).map(subtype => (
             <Grid
               key={subtype.mal_id}
               container
@@ -65,9 +69,9 @@ const Section = ({
       </Grid>
       <Box display='flex' justifyContent='center'>
         <Pagination
-          count={sectionProps.totalPages}
-          page={sectionProps.currentPage}
-          onChange={(e, page) => sectionProps.newPage(page, subType)}
+          count={totalPages}
+          page={currentPage}
+          onChange={(e, page) => newPage(page, subType)}
         />
       </Box>
     </Box>
@@ -79,7 +83,7 @@ Section.propTypes = {
   sectionTitle: PropTypes.string.isRequired,
   subType: PropTypes.string.isRequired,
   sectionProps: PropTypes.object.isRequired,
-  topItemsToReturn: PropTypes.number.isRequired,
+  topItemsToReturn: PropTypes.number.isRequired
 };
 
 export default Section;
