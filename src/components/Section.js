@@ -1,29 +1,31 @@
+import React from 'react';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import Pagination from '@material-ui/lab/Pagination';
 import PropTypes from 'prop-types';
-import React from 'react';
+import { helperVariables } from '../utility';
 
 import Card from './Card';
 
-const Section = ({
-  sectionTitle,
-  topSubtype,
-  totalPages,
-  currentPage,
-  subType,
-  newPage,
-  offset,
-  topItemsToReturn,
-  searchQuery,
-}) => {
+const Section = ({ sectionTitle, subType, sectionProps }) => {
+  const {
+    offset,
+    topSubtype,
+    searchQuery,
+    totalPages,
+    currentPage,
+    newPage
+  } = sectionProps;
+
+  const sectionItemsLength = offset + helperVariables.topItemsToReturn;
+
   let sizing;
-  if (topSubtype.slice(offset, offset + topItemsToReturn).length === 1) {
+  if (topSubtype.slice(offset, sectionItemsLength).length === 1) {
     sizing = 12;
-  } else if (topSubtype.slice(offset, offset + topItemsToReturn).length === 2) {
+  } else if (topSubtype.slice(offset, sectionItemsLength).length === 2) {
     sizing = 6;
-  } else if (topSubtype.slice(offset, offset + topItemsToReturn).length === 3) {
+  } else if (topSubtype.slice(offset, sectionItemsLength).length === 3) {
     sizing = 4;
   } else {
     sizing = 3;
@@ -42,7 +44,7 @@ const Section = ({
         {topSubtype.length === 0 && searchQuery?.length >= 1 ? (
           <CircularProgress />
         ) : (
-          topSubtype.slice(offset, offset + topItemsToReturn).map((subtype) => (
+          topSubtype.slice(offset, sectionItemsLength).map(subtype => (
             <Grid
               key={subtype.mal_id}
               container
@@ -79,13 +81,9 @@ const Section = ({
 // for validating prop types
 Section.propTypes = {
   sectionTitle: PropTypes.string.isRequired,
-  topSubtype: PropTypes.instanceOf(Array).isRequired,
-  totalPages: PropTypes.number.isRequired,
-  currentPage: PropTypes.number.isRequired,
   subType: PropTypes.string.isRequired,
-  newPage: PropTypes.func.isRequired,
-  offset: PropTypes.number.isRequired,
-  topItemsToReturn: PropTypes.number.isRequired,
+  sectionProps: PropTypes.object.isRequired,
+  topItemsToReturn: PropTypes.number.isRequired
 };
 
 export default Section;
